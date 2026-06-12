@@ -1,0 +1,40 @@
+import { Page } from '@playwright/test';
+import { ConfigManager } from '../config/ConfigManager';
+
+export class NavigationHelper {
+  private page: Page;
+  private baseUrl: string;
+
+  constructor(page: Page) {
+    this.page = page;
+    this.baseUrl = ConfigManager.getInstance().getBaseUrl();
+  }
+
+  async goTo(path: string, retries = 2): Promise<void> {
+    const url = path.startsWith('http') ? path : `${this.baseUrl}${path}`;
+    for (let i = 0; i <= retries; i++) {
+      try {
+        await this.page.goto(url, { waitUntil: 'networkidle', timeout: 30_000 });
+        return;
+      } catch (err) {
+        if (i === retries) throw err;
+      }
+    }
+  }
+
+  async switchBaseUrl(newBase: string): Promise<void> {
+    this.baseUrl = newBase;
+  }
+
+  async goBack(): Promise<void> {
+    await this.page.goBack({ waitUntil: 'networkidle' });
+  }
+
+  async refresh(): Promise<void> {
+    await this.page.reload({ waitUntil: 'networkidle' });
+  }
+
+  getCurrentUrl(): string {
+    return this.page.url();
+  }
+}
