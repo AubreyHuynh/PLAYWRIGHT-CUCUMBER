@@ -14,7 +14,7 @@ export class NavigationHelper {
     const url = path.startsWith('http') ? path : `${this.baseUrl}${path}`;
     for (let i = 0; i <= retries; i++) {
       try {
-        await this.page.goto(url, { waitUntil: 'networkidle', timeout: 30_000 });
+        await this.page.goto(url, { waitUntil: 'load', timeout: 30_000 });
         return;
       } catch (err) {
         if (i === retries) throw err;
@@ -27,11 +27,11 @@ export class NavigationHelper {
   }
 
   async goBack(): Promise<void> {
-    await this.page.goBack({ waitUntil: 'networkidle' });
+    await this.page.goBack({ waitUntil: 'load' });
   }
 
   async refresh(): Promise<void> {
-    await this.page.reload({ waitUntil: 'networkidle' });
+    await this.page.reload({ waitUntil: 'load' });
   }
 
   getCurrentUrl(): string {

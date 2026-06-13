@@ -10,7 +10,7 @@ export class WaitHelper {
   }
 
   static async forNetworkIdle(page: Page, timeout = 15_000): Promise<void> {
-    await page.waitForLoadState('networkidle', { timeout });
+    await page.waitForLoadState('load', { timeout });
   }
 
   static async forNavigation(page: Page, timeout = 15_000): Promise<void> {

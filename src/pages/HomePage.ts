@@ -1,4 +1,4 @@
-import { Page } from '@playwright/test';
+﻿import { Page } from '@playwright/test';
 import { BasePage } from './BasePage';
 import { Header } from '../components/Header';
 
@@ -21,7 +21,7 @@ export class HomePage extends BasePage {
   async searchProduct(keyword: string): Promise<void> {
     await this.page.locator('input#search_product').fill(keyword);
     await this.page.locator('button#submit_search').click();
-    await this.page.waitForLoadState('networkidle');
+    await this.page.waitForLoadState('domcontentloaded');
   }
 
   async getCarouselText(): Promise<string> {

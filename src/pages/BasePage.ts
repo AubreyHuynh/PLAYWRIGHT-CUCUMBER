@@ -16,11 +16,11 @@ export abstract class BasePage {
     await this.safeGoto(this.baseUrl + this.getPath());
   }
 
-  /** Safe navigation with retry and network-idle wait */
+  /** Safe navigation with retry. Uses 'domcontentloaded' so image-heavy pages don't stall. */
   async safeGoto(url: string, retries = 2): Promise<void> {
     for (let attempt = 0; attempt <= retries; attempt++) {
       try {
-        await this.page.goto(url, { waitUntil: 'networkidle', timeout: 30_000 });
+        await this.page.goto(url, { waitUntil: 'domcontentloaded', timeout: 20_000 });
         return;
       } catch (err) {
         if (attempt === retries) throw err;
@@ -39,7 +39,7 @@ export abstract class BasePage {
   /** Switch to a new tab opened by an action and return the new Page */
   async switchToNewTab(): Promise<Page> {
     const [newPage] = await Promise.all([this.page.context().waitForEvent('page')]);
-    await newPage.waitForLoadState('networkidle');
+    await newPage.waitForLoadState('load');
     return newPage;
   }
 

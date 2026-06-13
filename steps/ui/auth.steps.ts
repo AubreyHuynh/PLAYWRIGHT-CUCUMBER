@@ -1,6 +1,6 @@
 import { Given, When, Then } from '@cucumber/cucumber';
 import { expect } from '@playwright/test';
-import { CustomWorld } from '../../src/fixtures/CustomWorld';
+import type { CustomWorld } from '../../src/fixtures/CustomWorld';
 import { UserBuilder } from '../../src/data/builders/UserBuilder';
 import { UserFlows } from '../../src/flows/UserFlows';
 import { PageFactory } from '../../src/flows/PageFactory';
@@ -17,6 +17,7 @@ Given('I am logged in as a new user', async function (this: CustomWorld) {
   await flows.loginUser(user.email, user.password);
   this.createdUserEmail = user.email;
   this.createdUserPassword = user.password;
+  this.set('registeredUser', { email: user.email, password: user.password });
 });
 
 When('I register a new account', async function (this: CustomWorld) {
@@ -46,9 +47,7 @@ When('I logout', async function (this: CustomWorld) {
 });
 
 Then('I should be logged in successfully', async function (this: CustomWorld) {
-  const factory = new PageFactory(this.page);
-  const isLoggedIn = await factory.home().header.isLoggedIn();
-  expect(isLoggedIn).toBe(true);
+  await expect(this.page.getByText('Logged in as')).toBeVisible({ timeout: 10_000 });
 });
 
 Then('I should be logged out', async function (this: CustomWorld) {

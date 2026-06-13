@@ -26,7 +26,11 @@ export class AccountsApi extends ApiClient {
   }
 
   async deleteAccount(email: string, password: string): Promise<ApiResponse> {
-    const res = await this.delete<ApiResponse>('/deleteAccount', { email, password });
+    const form = new URLSearchParams({ email, password });
+    const res = await this.http.delete<ApiResponse>('/deleteAccount', {
+      data: form.toString(),
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    });
     return res.data;
   }
 }

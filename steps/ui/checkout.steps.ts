@@ -1,5 +1,5 @@
 import { When, Then } from '@cucumber/cucumber';
-import { CustomWorld } from '../../src/fixtures/CustomWorld';
+import type { CustomWorld } from '../../src/fixtures/CustomWorld';
 import { PageFactory } from '../../src/flows/PageFactory';
 import { CardBuilder } from '../../src/data/builders/CardBuilder';
 

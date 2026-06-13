@@ -1,9 +1,10 @@
 import { Given, When, Then } from '@cucumber/cucumber';
 import { expect } from '@playwright/test';
-import { CustomWorld } from '../../src/fixtures/CustomWorld';
+import type { CustomWorld } from '../../src/fixtures/CustomWorld';
 import { AccountsApi } from '../../src/api/endpoints/AccountsApi';
 import { UserBuilder } from '../../src/data/builders/UserBuilder';
 import { DataManager } from '../../src/data/DataManager';
+import { PageFactory } from '../../src/flows/PageFactory';
 
 async function attachResponse(world: CustomWorld, data: unknown): Promise<void> {
   await world.attach(JSON.stringify(data, null, 2), 'application/json');
@@ -77,11 +78,9 @@ Then('the login verification should succeed', async function (this: CustomWorld)
 
 Then('I should be able to login via UI with the API-created account', async function (this: CustomWorld) {
   const user = this.get<{ email: string; password: string }>('apiUser');
-  const loginPage = this.page.goto('/login');
-  await loginPage;
-  await this.page.locator('input[data-qa="login-email"]').fill(user.email);
-  await this.page.locator('input[data-qa="login-password"]').fill(user.password);
-  await this.page.locator('button[data-qa="login-button"]').click();
-  await this.page.waitForLoadState('networkidle');
+  const factory = new PageFactory(this.page);
+  const login = factory.login();
+  await login.navigate();
+  await login.login(user.email, user.password);
   await expect(this.page.getByText('Logged in as')).toBeVisible();
 });

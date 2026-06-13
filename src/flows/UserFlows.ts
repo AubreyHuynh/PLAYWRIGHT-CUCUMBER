@@ -1,4 +1,4 @@
-import { Page } from '@playwright/test';
+﻿import { Page } from '@playwright/test';
 import { PageFactory } from './PageFactory';
 import { User } from '../data/builders/UserBuilder';
 import { AccountsApi } from '../api/endpoints/AccountsApi';
@@ -40,7 +40,7 @@ export class UserFlows {
   /** Logout via header */
   async logoutUser(): Promise<void> {
     await this.factory.home().header.clickLogout();
-    await this.page.waitForLoadState('networkidle');
+    await this.page.waitForLoadState('domcontentloaded');
   }
 
   /** Create account via API (faster than UI for test setup) */

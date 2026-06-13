@@ -10,7 +10,7 @@ export class LoginPage extends BasePage {
     await this.page.locator('input[data-qa="login-email"]').fill(email);
     await this.page.locator('input[data-qa="login-password"]').fill(password);
     await this.page.locator('button[data-qa="login-button"]').click();
-    await this.page.waitForLoadState('networkidle');
+    await this.page.waitForLoadState('domcontentloaded');
   }
 
   async getLoginError(): Promise<string> {
@@ -27,7 +27,7 @@ export class LoginPage extends BasePage {
 
   async clickSignup(): Promise<void> {
     await this.page.locator('button[data-qa="signup-button"]').click();
-    await this.page.waitForLoadState('networkidle');
+    await this.page.waitForLoadState('domcontentloaded');
   }
 
   async assertPageLoaded(): Promise<void> {

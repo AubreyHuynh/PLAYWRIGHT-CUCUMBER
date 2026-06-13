@@ -1,4 +1,4 @@
-import { expect } from '@playwright/test';
+﻿import { expect } from '@playwright/test';
 import { BasePage } from './BasePage';
 
 export class ContactPage extends BasePage {
@@ -20,10 +20,10 @@ export class ContactPage extends BasePage {
   async submit(): Promise<void> {
     this.page.on('dialog', (dialog) => dialog.accept());
     await this.page.locator('input[name="submit"]').click();
-    await this.page.waitForLoadState('networkidle');
+    await this.page.waitForLoadState('domcontentloaded');
   }
 
   async assertSuccessMessage(): Promise<void> {
-    await expect(this.page.locator('.alert-success')).toBeVisible({ timeout: 10_000 });
+    await expect(this.page.locator('#contact-page .alert-success')).toBeVisible({ timeout: 10_000 });
   }
 }

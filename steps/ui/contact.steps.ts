@@ -1,5 +1,5 @@
 import { Given, When, Then } from '@cucumber/cucumber';
-import { CustomWorld } from '../../src/fixtures/CustomWorld';
+import type { CustomWorld } from '../../src/fixtures/CustomWorld';
 import { PageFactory } from '../../src/flows/PageFactory';
 import { faker } from '@faker-js/faker';
 

@@ -1,6 +1,6 @@
 import { Given, When, Then } from '@cucumber/cucumber';
 import { expect } from '@playwright/test';
-import { CustomWorld } from '../../src/fixtures/CustomWorld';
+import type { CustomWorld } from '../../src/fixtures/CustomWorld';
 import { PageFactory } from '../../src/flows/PageFactory';
 
 Given('I am on the cart page', async function (this: CustomWorld) {
@@ -13,7 +13,7 @@ Then('the cart should contain {string}', async function (this: CustomWorld, prod
   await factory.cart().assertProductInCart(productName);
 });
 
-Then('the cart should have {int} item(s)', async function (this: CustomWorld, count: number) {
+Then('the cart should have {int} item\\(s\\)', async function (this: CustomWorld, count: number) {
   const factory = new PageFactory(this.page);
   const actual = await factory.cart().getCartCount();
   expect(actual).toBe(count);

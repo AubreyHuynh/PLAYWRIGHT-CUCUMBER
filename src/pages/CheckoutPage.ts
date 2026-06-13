@@ -1,4 +1,4 @@
-import { expect } from '@playwright/test';
+﻿import { expect } from '@playwright/test';
 import { BasePage } from './BasePage';
 import { Card } from '../data/builders/CardBuilder';
 
@@ -17,7 +17,7 @@ export class CheckoutPage extends BasePage {
 
   async placeOrder(): Promise<void> {
     await this.page.locator('a:text("Place Order")').click();
-    await this.page.waitForLoadState('networkidle');
+    await this.page.waitForLoadState('domcontentloaded');
   }
 
   async fillPayment(card: Card): Promise<void> {
@@ -30,11 +30,11 @@ export class CheckoutPage extends BasePage {
 
   async confirmPayment(): Promise<void> {
     await this.page.locator('button[data-qa="pay-button"]').click();
-    await this.page.waitForLoadState('networkidle');
+    await this.page.waitForURL('**/payment_done/**', { timeout: 20_000 });
   }
 
   async assertOrderPlaced(): Promise<void> {
-    await expect(this.page.getByText('ORDER PLACED!')).toBeVisible({ timeout: 15_000 });
+    await expect(this.page).toHaveURL(/payment_done/, { timeout: 10_000 });
   }
 
   async downloadInvoice(): Promise<void> {

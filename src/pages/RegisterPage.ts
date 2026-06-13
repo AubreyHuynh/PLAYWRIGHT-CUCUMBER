@@ -1,4 +1,4 @@
-import { BasePage } from './BasePage';
+﻿import { BasePage } from './BasePage';
 import { User } from '../data/builders/UserBuilder';
 
 export class RegisterPage extends BasePage {
@@ -32,7 +32,7 @@ export class RegisterPage extends BasePage {
 
   async submitRegistration(): Promise<void> {
     await this.page.locator('button[data-qa="create-account"]').click();
-    await this.page.waitForLoadState('networkidle');
+    await this.page.waitForURL('**/account_created**', { timeout: 20_000 });
   }
 
   async isAccountCreated(): Promise<boolean> {
@@ -41,6 +41,7 @@ export class RegisterPage extends BasePage {
 
   async clickContinue(): Promise<void> {
     await this.page.locator('a[data-qa="continue-button"]').click();
+    await this.page.waitForLoadState('domcontentloaded');
   }
 
   private monthName(month: string): string {

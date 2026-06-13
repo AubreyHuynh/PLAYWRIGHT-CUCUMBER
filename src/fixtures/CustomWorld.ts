@@ -66,6 +66,7 @@ export class CustomWorld extends World {
       timezoneId: cfg.timezone,
       viewport: { width: 1280, height: 720 },
       recordVideo: { dir: 'test-results/videos' },
+      acceptDownloads: true,
       ...(authStateExists ? { storageState: AUTH_STATE_PATH } : {}),
     });
 

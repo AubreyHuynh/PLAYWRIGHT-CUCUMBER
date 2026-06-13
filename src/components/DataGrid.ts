@@ -1,4 +1,4 @@
-import { Page, Locator } from '@playwright/test';
+﻿import { Page, Locator } from '@playwright/test';
 import { BaseComponent } from './BaseComponent';
 
 export interface GridRow {
@@ -76,7 +76,7 @@ export class DataGrid extends BaseComponent {
     const idx = items.findIndex((t) => t.trim() === String(pageNumber));
     if (idx === -1) throw new Error(`Page ${pageNumber} not found in paginator`);
     await pager.nth(idx).click();
-    await this.page.waitForLoadState('networkidle');
+    await this.page.waitForLoadState('domcontentloaded');
   }
 
   /** Assert the grid contains a row where column equals value */

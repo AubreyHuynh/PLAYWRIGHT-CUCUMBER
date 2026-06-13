@@ -13,7 +13,7 @@ export class ProductCard extends BaseComponent {
 
   async addToCart(): Promise<void> {
     await this.card.hover();
-    await this.card.getByText('Add to cart').click();
+    await this.card.getByText('Add to cart').first().click();
   }
 
   async viewProduct(): Promise<void> {

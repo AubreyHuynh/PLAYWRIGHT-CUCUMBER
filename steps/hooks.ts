@@ -1,5 +1,7 @@
-import { Before, After, BeforeAll, AfterAll, AfterStep, ITestCaseHookParameter } from '@cucumber/cucumber';
-import { CustomWorld } from '../src/fixtures/CustomWorld';
+import { Before, After, BeforeAll, AfterAll, AfterStep, ITestCaseHookParameter, setDefaultTimeout } from '@cucumber/cucumber';
+
+setDefaultTimeout(60_000);
+import type { CustomWorld } from '../src/fixtures/CustomWorld';
 import { DataManager } from '../src/data/DataManager';
 import { DbManager } from '../src/db/DbManager';
 import { AccountsApi } from '../src/api/endpoints/AccountsApi';

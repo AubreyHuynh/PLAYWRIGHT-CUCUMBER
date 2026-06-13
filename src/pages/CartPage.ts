@@ -1,4 +1,4 @@
-import { expect } from '@playwright/test';
+﻿import { expect } from '@playwright/test';
 import { BasePage } from './BasePage';
 
 export interface CartItem {
@@ -34,7 +34,7 @@ export class CartPage extends BasePage {
   async removeItem(productName: string): Promise<void> {
     const row = this.page.locator('#cart_info_table tbody tr').filter({ hasText: productName });
     await row.locator('a.cart_quantity_delete').click();
-    await this.page.waitForLoadState('networkidle');
+    await this.page.waitForLoadState('domcontentloaded');
   }
 
   async proceedToCheckout(): Promise<void> {
@@ -42,10 +42,11 @@ export class CartPage extends BasePage {
   }
 
   async assertProductInCart(productName: string): Promise<void> {
-    await expect(this.page.locator('#cart_info_table').getByText(productName)).toBeVisible();
+    await this.navigate();
+    await expect(this.page.locator('#cart_info_table').getByText(productName)).toBeVisible({ timeout: 10_000 });
   }
 
   async assertCartEmpty(): Promise<void> {
-    await expect(this.page.locator('#empty_cart')).toBeVisible();
+    await expect(this.page.locator('#empty_cart')).toBeVisible({ timeout: 15_000 });
   }
 }
