@@ -28,4 +28,8 @@ dist/
 
 # Local docs and prompts
 prompt.md
-docs/
+docs/superpowers/
+
+# Empty scaffold folders
+reports/
+tests/
