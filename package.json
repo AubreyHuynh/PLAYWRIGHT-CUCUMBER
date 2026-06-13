@@ -1,15 +1,53 @@
 {
-  "name": "02---playwright---cucumber",
+  "name": "playwright-cucumber-framework",
   "version": "1.0.0",
-  "description": "",
+  "description": "Production-grade Playwright + Cucumber BDD test automation framework",
   "main": "index.js",
-  "scripts": {},
+  "scripts": {
+    "test": "cucumber-js --profile default",
+    "test:ui": "cucumber-js --profile ui",
+    "test:api": "cucumber-js --profile api",
+    "test:smoke": "cucumber-js --profile smoke",
+    "test:parallel": "cucumber-js --profile parallel",
+    "test:bs": "RUN_ON=browserstack cucumber-js --profile default",
+    "report": "allure generate allure-results --clean -o allure-report && allure open allure-report",
+    "report:generate": "allure generate allure-results --clean -o allure-report",
+    "lint": "eslint src steps features --ext .ts",
+    "lint:fix": "eslint src steps features --ext .ts --fix",
+    "format": "prettier --write \"**/*.{ts,json,md,yml,yaml}\"",
+    "clean": "rimraf allure-results allure-report playwright-report test-results .auth downloads",
+    "typecheck": "tsc --noEmit"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "type": "commonjs",
   "devDependencies": {
-    "@playwright/test": "^1.60.0",
-    "@types/node": "^25.9.3"
-  }
+    "@cucumber/cucumber": "^11.0.1",
+    "@faker-js/faker": "^9.3.0",
+    "@playwright/test": "^1.49.1",
+    "@types/node": "^22.10.2",
+    "@types/nodemailer": "^8.0.1",
+    "@types/pg": "^8.20.0",
+    "@typescript-eslint/eslint-plugin": "^8.18.0",
+    "@typescript-eslint/parser": "^8.18.0",
+    "allure-cucumberjs": "^3.1.3",
+    "allure-js-commons": "^3.1.3",
+    "dotenv": "^16.4.7",
+    "eslint": "^9.17.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-prettier": "^5.2.1",
+    "multiple-cucumber-html-reporter": "^3.8.0",
+    "prettier": "^3.4.2",
+    "rimraf": "^6.0.1",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.7.2"
+  },
+  "dependencies": {
+    "axios": "^1.7.9",
+    "mysql2": "^3.11.5",
+    "nodemailer": "^6.9.16",
+    "pg": "^8.13.1",
+    "uuid": "^11.0.3"
+  },
+  "type": "commonjs"
 }

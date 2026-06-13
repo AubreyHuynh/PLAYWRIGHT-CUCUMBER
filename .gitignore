@@ -6,3 +6,30 @@ node_modules/
 /blob-report/
 /playwright/.cache/
 /playwright/.auth/
+
+# Allure
+allure-results/
+allure-report/
+
+# Auth state
+.auth/
+downloads/
+
+# Env secrets (keep .env.example committed)
+.env
+config/.env.dev
+config/.env.staging
+config/.env.prod
+
+# Build
+dist/
+*.log
+.DS_Store
+
+# Local docs and prompts
+prompt.md
+docs/superpowers/
+
+# Empty scaffold folders
+reports/
+tests/
