@@ -1,5 +1,6 @@
-﻿import { expect } from '@playwright/test';
+import { Page, expect } from '@playwright/test';
 import { BasePage } from './BasePage';
+import { CartTable } from '../locator/components/cart/CartTable';
 
 export interface CartItem {
   name: string;
@@ -9,41 +10,51 @@ export interface CartItem {
 }
 
 export class CartPage extends BasePage {
+  private table: CartTable;
+
+  constructor(page: Page) {
+    super(page);
+    this.table = new CartTable(page);
+  }
+
   getPath(): string {
     return '/view_cart';
   }
 
   async getCartItems(): Promise<CartItem[]> {
-    const rows = await this.page.locator('#cart_info_table tbody tr').all();
-    const items: CartItem[] = [];
-    for (const row of rows) {
-      items.push({
-        name: (await row.locator('td.cart_description h4 a').textContent()) || '',
-        price: (await row.locator('td.cart_price p').textContent()) || '',
-        quantity: (await row.locator('td.cart_quantity button').textContent()) || '',
-        total: (await row.locator('td.cart_total p').textContent()) || '',
-      });
-    }
-    return items;
+    const rows = await this.table.rows();
+    return Promise.all(
+      rows.map(async row => ({
+        name: await row.name(),
+        price: await row.price(),
+        quantity: await row.quantity(),
+        total: await row.total(),
+      })),
+    );
   }
 
   async getCartCount(): Promise<number> {
-    return this.page.locator('#cart_info_table tbody tr').count();
+    return this.table.count();
   }
 
   async removeItem(productName: string): Promise<void> {
-    const row = this.page.locator('#cart_info_table tbody tr').filter({ hasText: productName });
-    await row.locator('a.cart_quantity_delete').click();
+    await this.table.findByName(productName).delete();
     await this.page.waitForLoadState('domcontentloaded');
   }
 
   async proceedToCheckout(): Promise<void> {
-    await this.page.locator('a:text("Proceed To Checkout")').click();
+    await this.page.getByRole('link', { name: 'Proceed To Checkout' }).click();
+    const modal = this.page.locator('.modal');
+    if (await modal.isVisible()) {
+      await modal.getByRole('link', { name: 'Checkout' }).click();
+    }
   }
 
   async assertProductInCart(productName: string): Promise<void> {
     await this.navigate();
-    await expect(this.page.locator('#cart_info_table').getByText(productName)).toBeVisible({ timeout: 10_000 });
+    await expect(
+      this.page.locator('#cart_info_table').getByText(productName),
+    ).toBeVisible({ timeout: 10_000 });
   }
 
   async assertCartEmpty(): Promise<void> {
