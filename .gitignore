@@ -13,6 +13,7 @@ allure-report/
 
 # Auth state
 .auth/
+saveAuth/session/*.json
 downloads/
 
 # Env secrets (keep .env.example committed)

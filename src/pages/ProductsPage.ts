@@ -1,14 +1,14 @@
 ﻿import { Page, expect } from '@playwright/test';
 import { BasePage } from './BasePage';
-import { ProductCard } from '../components/ProductCard';
-import { Modal } from '../components/Modal';
+import { Card } from '../locator/components/display/card';
+import { Dialog } from '../locator/components/popup/dialog';
 
 export class ProductsPage extends BasePage {
-  readonly modal: Modal;
+  readonly modal: Dialog;
 
   constructor(page: Page) {
     super(page);
-    this.modal = new Modal(page);
+    this.modal = new Dialog(page);
   }
 
   getPath(): string {
@@ -26,7 +26,7 @@ export class ProductsPage extends BasePage {
   }
 
   async addProductToCart(productName: string): Promise<void> {
-    const card = new ProductCard(this.page, productName);
+    const card = new Card(this.page, productName);
     await card.addToCart();
   }
 
@@ -47,7 +47,7 @@ export class ProductsPage extends BasePage {
   }
 
   async viewProductDetail(productName: string): Promise<void> {
-    const card = new ProductCard(this.page, productName);
+    const card = new Card(this.page, productName);
     await card.viewProduct();
     await this.page.waitForLoadState('domcontentloaded');
   }

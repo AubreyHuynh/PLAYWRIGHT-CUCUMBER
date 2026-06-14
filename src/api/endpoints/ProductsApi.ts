@@ -1,5 +1,6 @@
-import { ApiClient } from '../ApiClient';
+import { ApiClient } from '../client';
 import { ApiProductList, ApiSearchResult } from '../models';
+import { toFormParams } from '../payloadBuilder';
 
 export class ProductsApi extends ApiClient {
   async getAllProducts(): Promise<ApiProductList> {
@@ -8,8 +9,7 @@ export class ProductsApi extends ApiClient {
   }
 
   async searchProduct(keyword: string): Promise<ApiSearchResult> {
-    const form = new URLSearchParams({ search_product: keyword });
-    const res = await this.post<ApiSearchResult>('/searchProduct', form);
+    const res = await this.post<ApiSearchResult>('/searchProduct', toFormParams({ search_product: keyword }));
     return res.data;
   }
 }

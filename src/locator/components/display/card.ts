@@ -1,7 +1,7 @@
 import { Page, Locator } from '@playwright/test';
-import { BaseComponent } from './BaseComponent';
+import { BaseComponent } from '../baseComponent';
 
-export class ProductCard extends BaseComponent {
+export class Card extends BaseComponent {
   private card: Locator;
 
   constructor(page: Page, productName: string) {

@@ -1,23 +1,22 @@
 import { Before, After, BeforeAll, AfterAll, AfterStep, ITestCaseHookParameter, setDefaultTimeout } from '@cucumber/cucumber';
 
 setDefaultTimeout(60_000);
-import type { CustomWorld } from '../src/fixtures/CustomWorld';
+import type { CustomWorld } from './world';
 import { DataManager } from '../src/data/DataManager';
 import { DbManager } from '../src/db/DbManager';
-import { AccountsApi } from '../src/api/endpoints/AccountsApi';
+import { APIHelper } from '../src/api/APIHelper';
 import { FileHelper } from '../src/utils/FileHelper';
 import * as fs from 'fs';
 import * as path from 'path';
 
 BeforeAll(async function () {
-  const api = new AccountsApi();
+  const helper = new APIHelper();
   DataManager.getInstance().registerApiClient({
     deleteAccount: async (email, password) => {
-      await api.deleteAccount(email, password);
+      await helper.deleteUser(email, password);
     },
   });
 
-  // Write Allure environment info so the report shows run context
   const cfg = {
     BASE_URL: process.env.BASE_URL || 'https://automationexercise.com',
     ENV: process.env.ENV || 'dev',
@@ -37,16 +36,12 @@ Before({ tags: '@db' }, async function (this: CustomWorld) {
   await DbManager.getInstance().connect();
 });
 
-/** @upload — ensure the upload dir exists before the scenario runs */
 Before({ tags: '@upload' }, async function (this: CustomWorld) {
   FileHelper.ensureDownloadDir();
 });
 
-/** @api — no browser needed; skip browser launch for pure API scenarios */
 Before({ tags: '@api' }, async function (this: CustomWorld) {
-  // API scenarios use axios directly; browser init is still called by the
-  // general Before hook above but the page will simply sit unused.
-  // This hook is a hook point for future API-specific setup (e.g. token refresh).
+  // API scenarios use axios directly; this hook is a point for future API-specific setup.
 });
 
 Before(async function (this: CustomWorld) {

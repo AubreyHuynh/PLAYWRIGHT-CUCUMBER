@@ -1,12 +1,12 @@
 import { Given, When, Then } from '@cucumber/cucumber';
 import { expect } from '@playwright/test';
-import type { CustomWorld } from '../../src/fixtures/CustomWorld';
+import type { CustomWorld } from '../../support/world';
 import { UserBuilder } from '../../src/data/builders/UserBuilder';
 import { UserFlows } from '../../src/flows/UserFlows';
-import { PageFactory } from '../../src/flows/PageFactory';
+import { PageManager } from '../../support/pageManager';
 
 Given('I am on the login page', async function (this: CustomWorld) {
-  const factory = new PageFactory(this.page);
+  const factory = new PageManager(this.page);
   await factory.login().navigate();
 });
 
@@ -30,14 +30,14 @@ When('I register a new account', async function (this: CustomWorld) {
 When(
   'I login with email {string} and password {string}',
   async function (this: CustomWorld, email: string, password: string) {
-    const factory = new PageFactory(this.page);
+    const factory = new PageManager(this.page);
     await factory.login().login(email, password);
   },
 );
 
 When('I login with the registered credentials', async function (this: CustomWorld) {
   const user = this.get<{ email: string; password: string }>('registeredUser');
-  const factory = new PageFactory(this.page);
+  const factory = new PageManager(this.page);
   await factory.login().login(user.email, user.password);
 });
 
