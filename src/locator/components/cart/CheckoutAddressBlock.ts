@@ -3,7 +3,7 @@ import { BaseComponent } from '../baseComponent';
 
 export class CheckoutAddressBlock extends BaseComponent {
   constructor(page: Page) {
-    super(page, '#address_delivery');
+    super(page);
   }
 
   async getDeliveryAddress(): Promise<string> {
