@@ -1,31 +1,31 @@
 import { Given, When, Then } from '@cucumber/cucumber';
 import { expect } from '@playwright/test';
-import type { CustomWorld } from '../../src/fixtures/CustomWorld';
-import { PageFactory } from '../../src/flows/PageFactory';
+import type { CustomWorld } from '../../support/world';
+import { PageManager } from '../../support/pageManager';
 
 Given('I am on the cart page', async function (this: CustomWorld) {
-  const factory = new PageFactory(this.page);
+  const factory = new PageManager(this.page);
   await factory.cart().navigate();
 });
 
 Then('the cart should contain {string}', async function (this: CustomWorld, productName: string) {
-  const factory = new PageFactory(this.page);
+  const factory = new PageManager(this.page);
   await factory.cart().assertProductInCart(productName);
 });
 
 Then('the cart should have {int} item\\(s\\)', async function (this: CustomWorld, count: number) {
-  const factory = new PageFactory(this.page);
+  const factory = new PageManager(this.page);
   const actual = await factory.cart().getCartCount();
   expect(actual).toBe(count);
 });
 
 When('I remove {string} from the cart', async function (this: CustomWorld, productName: string) {
-  const factory = new PageFactory(this.page);
+  const factory = new PageManager(this.page);
   await factory.cart().removeItem(productName);
 });
 
 When('I remove the first item from cart', async function (this: CustomWorld) {
-  const factory = new PageFactory(this.page);
+  const factory = new PageManager(this.page);
   await factory.cart().navigate();
   const items = await factory.cart().getCartItems();
   if (items.length > 0) {
@@ -34,11 +34,11 @@ When('I remove the first item from cart', async function (this: CustomWorld) {
 });
 
 When('I proceed to checkout', async function (this: CustomWorld) {
-  const factory = new PageFactory(this.page);
+  const factory = new PageManager(this.page);
   await factory.cart().proceedToCheckout();
 });
 
 Then('the cart should be empty', async function (this: CustomWorld) {
-  const factory = new PageFactory(this.page);
+  const factory = new PageManager(this.page);
   await factory.cart().assertCartEmpty();
 });

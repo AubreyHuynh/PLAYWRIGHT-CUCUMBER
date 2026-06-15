@@ -2,7 +2,6 @@ import axios, { AxiosInstance, AxiosResponse } from 'axios';
 import { ConfigManager } from '../config/ConfigManager';
 
 export class ApiClient {
-  private static instance: ApiClient;
   protected http: AxiosInstance;
 
   constructor(baseURL?: string) {
@@ -11,13 +10,6 @@ export class ApiClient {
       timeout: 30_000,
       headers: { 'Content-Type': 'application/json' },
     });
-  }
-
-  static getInstance(): ApiClient {
-    if (!ApiClient.instance) {
-      ApiClient.instance = new ApiClient();
-    }
-    return ApiClient.instance;
   }
 
   async get<T>(path: string, params?: Record<string, string>): Promise<AxiosResponse<T>> {

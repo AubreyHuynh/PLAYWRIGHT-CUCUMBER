@@ -1,5 +1,5 @@
 import { Page } from '@playwright/test';
-import { BaseComponent } from './BaseComponent';
+import { BaseComponent } from '../baseComponent';
 
 export class Header extends BaseComponent {
   constructor(page: Page) {

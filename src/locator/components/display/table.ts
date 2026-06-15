@@ -1,11 +1,11 @@
-﻿import { Page, Locator } from '@playwright/test';
-import { BaseComponent } from './BaseComponent';
+import { Page, Locator } from '@playwright/test';
+import { BaseComponent } from '../baseComponent';
 
 export interface GridRow {
   [column: string]: string;
 }
 
-export class DataGrid extends BaseComponent {
+export class Table extends BaseComponent {
   constructor(page: Page, tableSelector = 'table') {
     super(page, tableSelector);
   }
@@ -48,7 +48,6 @@ export class DataGrid extends BaseComponent {
     return this.root.locator(`tbody tr:nth-child(${row}) td:nth-child(${col})`);
   }
 
-  /** Click a column header to sort by that column */
   async sortByColumn(column: string): Promise<void> {
     const headers = await this.getHeaders();
     const idx = headers.indexOf(column);
@@ -56,7 +55,6 @@ export class DataGrid extends BaseComponent {
     await this.root.locator(`thead th:nth-child(${idx + 1})`).click();
   }
 
-  /** Sort rows in-memory by a given column, direction 'asc'|'desc' */
   async getSortedRows(column: string, direction: 'asc' | 'desc' = 'asc'): Promise<GridRow[]> {
     const rows = await this.getAllRows();
     return rows.sort((a, b) => {
@@ -66,10 +64,6 @@ export class DataGrid extends BaseComponent {
     });
   }
 
-  /**
-   * Paginate by clicking a numbered page button.
-   * Assumes pagination uses links/buttons with the page number as text.
-   */
   async goToPage(pageNumber: number): Promise<void> {
     const pager = this.page.locator(`.pagination a, nav[aria-label="pagination"] a`);
     const items = await pager.allTextContents();
@@ -79,7 +73,6 @@ export class DataGrid extends BaseComponent {
     await this.page.waitForLoadState('domcontentloaded');
   }
 
-  /** Assert the grid contains a row where column equals value */
   async assertRowExists(column: string, value: string): Promise<void> {
     const row = await this.findRowByColumn(column, value);
     if (!row) throw new Error(`No row found where ${column} = "${value}"`);

@@ -1,67 +1,40 @@
 import { Given, When, Then } from '@cucumber/cucumber';
 import { expect } from '@playwright/test';
-import type { CustomWorld } from '../../src/fixtures/CustomWorld';
-import { AccountsApi } from '../../src/api/endpoints/AccountsApi';
+import type { CustomWorld } from '../../support/world';
 import { UserBuilder } from '../../src/data/builders/UserBuilder';
-import { DataManager } from '../../src/data/DataManager';
-import { PageFactory } from '../../src/flows/PageFactory';
+import { APIHelper } from '../../src/api/APIHelper';
+import { PageManager } from '../../support/pageManager';
 
 async function attachResponse(world: CustomWorld, data: unknown): Promise<void> {
   await world.attach(JSON.stringify(data, null, 2), 'application/json');
 }
 
-const accountsApi = new AccountsApi();
+const apiHelper = new APIHelper();
 
 Given('a new user account exists via API', async function (this: CustomWorld) {
   const user = new UserBuilder().build();
   this.set('apiUser', user);
-  await accountsApi.createAccount({
-    name: user.name,
-    email: user.email,
-    password: user.password,
-    firstname: user.firstName,
-    lastname: user.lastName,
-    address1: user.address,
-    country: user.country,
-    state: user.state,
-    city: user.city,
-    zipcode: user.zipcode,
-    mobile_number: user.mobileNumber,
-  });
-  DataManager.getInstance().trackAccount(user, 'api');
+  await apiHelper.createUser(user);
 });
 
 When('I create a new account via API', async function (this: CustomWorld) {
   const user = new UserBuilder().build();
   this.set('apiUser', user);
-  const response = await accountsApi.createAccount({
-    name: user.name,
-    email: user.email,
-    password: user.password,
-    firstname: user.firstName,
-    lastname: user.lastName,
-    address1: user.address,
-    country: user.country,
-    state: user.state,
-    city: user.city,
-    zipcode: user.zipcode,
-    mobile_number: user.mobileNumber,
-  });
+  const response = await apiHelper.createUser(user);
   this.set('accountResponse', response);
   await attachResponse(this, response);
-  DataManager.getInstance().trackAccount(user, 'api');
 });
 
 When('I verify login via API', async function (this: CustomWorld) {
   const user = this.get<{ email: string; password: string }>('apiUser');
-  const response = await accountsApi.verifyLogin(user.email, user.password);
+  const response = await apiHelper.verifyLogin(user.email, user.password);
   this.set('accountResponse', response);
   await attachResponse(this, response);
 });
 
 When('I delete the account via API', async function (this: CustomWorld) {
   const user = this.get<{ email: string; password: string }>('apiUser');
-  const response = await accountsApi.deleteAccount(user.email, user.password);
+  const response = await apiHelper.deleteUser(user.email, user.password);
   this.set('accountResponse', response);
   await attachResponse(this, response);
 });
@@ -78,7 +51,7 @@ Then('the login verification should succeed', async function (this: CustomWorld)
 
 Then('I should be able to login via UI with the API-created account', async function (this: CustomWorld) {
   const user = this.get<{ email: string; password: string }>('apiUser');
-  const factory = new PageFactory(this.page);
+  const factory = new PageManager(this.page);
   const login = factory.login();
   await login.navigate();
   await login.login(user.email, user.password);

@@ -1,5 +1,5 @@
 const common = {
-  require: ['src/fixtures/CustomWorld.ts', 'steps/**/*.ts'],
+  require: ['support/world.ts', 'support/hooks.ts', 'steps/**/*.ts'],
   requireModule: ['ts-node/register'],
   format: [
     'progress-bar',

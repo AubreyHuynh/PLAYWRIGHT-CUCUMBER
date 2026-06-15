@@ -1,5 +1,5 @@
 import { Page } from '@playwright/test';
-import { PageFactory } from './PageFactory';
+import { PageManager as PageFactory } from '../../support/pageManager';
 
 export class ProductFlows {
   private factory: PageFactory;

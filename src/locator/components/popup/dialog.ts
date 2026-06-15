@@ -1,7 +1,7 @@
 import { Page } from '@playwright/test';
-import { BaseComponent } from './BaseComponent';
+import { BaseComponent } from '../baseComponent';
 
-export class Modal extends BaseComponent {
+export class Dialog extends BaseComponent {
   constructor(page: Page, rootSelector = '.modal') {
     super(page, rootSelector);
   }
@@ -19,7 +19,7 @@ export class Modal extends BaseComponent {
     if (await closeBtn.isVisible()) await closeBtn.click();
   }
 
-  async waitForModal(timeout = 5000): Promise<void> {
+  async waitForDialog(timeout = 5000): Promise<void> {
     await this.root.waitFor({ state: 'visible', timeout });
   }
 }

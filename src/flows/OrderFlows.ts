@@ -1,5 +1,5 @@
 import { Page } from '@playwright/test';
-import { PageFactory } from './PageFactory';
+import { PageManager as PageFactory } from '../../support/pageManager';
 import { Card } from '../data/builders/CardBuilder';
 
 export class OrderFlows {
