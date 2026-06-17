@@ -2,6 +2,7 @@ import { When, Then } from '@cucumber/cucumber';
 import { expect } from '@playwright/test';
 import type { CustomWorld } from '../../support/world';
 import { ProductsApi } from '../../src/api/endpoints/ProductsApi';
+import { r } from '../../support/resolveParams';
 
 const productsApi = new ProductsApi();
 
@@ -15,7 +16,8 @@ When('I request the products list via API', async function (this: CustomWorld) {
   await attachResponse(this, response);
 });
 
-When('I search for {string} via API', async function (this: CustomWorld, keyword: string) {
+When('I search for {string} via API', async function (this: CustomWorld, rawKeyword: string) {
+  const keyword = r(rawKeyword);
   const response = await productsApi.searchProduct(keyword);
   this.set('searchResponse', response);
   this.set('searchKeyword', keyword);
@@ -35,7 +37,8 @@ Then('the products list should not be empty', async function (this: CustomWorld)
   expect(response.products.length).toBeGreaterThan(0);
 });
 
-Then('all search results should contain {string} in the name', async function (this: CustomWorld, keyword: string) {
+Then('all search results should contain {string} in the name', async function (this: CustomWorld, rawKeyword: string) {
+  const keyword = r(rawKeyword);
   // The API performs category/tag-based search, not strict substring matching.
   // Verify at least one result name contains the keyword (case-insensitive).
   const response = this.get<{ products: Array<{ name: string }> }>('searchResponse');
