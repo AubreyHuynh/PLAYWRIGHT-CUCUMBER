@@ -4,14 +4,16 @@ export function uniqueId(): string {
   return uuidv4();
 }
 
-/** Generates a unique test email. Uses a timestamp suffix to guarantee uniqueness across parallel runs. */
+/** Generates a unique test email. Uses timestamp + random suffix to guarantee uniqueness across parallel runs. */
 export function uniqueEmail(prefix = 'user'): string {
-  return `${prefix}.${Date.now()}@test.local`;
+  const rand = Math.random().toString(36).slice(2, 8);
+  return `${prefix}.${Date.now()}-${rand}@test.local`;
 }
 
 /** Generates a unique username safe for form fields and URLs. */
 export function uniqueUsername(prefix = 'user'): string {
-  return `${prefix}_${Date.now()}`;
+  const rand = Math.random().toString(36).slice(2, 8);
+  return `${prefix}_${Date.now()}-${rand}`;
 }
 
 /** Inclusive random integer in [min, max]. */

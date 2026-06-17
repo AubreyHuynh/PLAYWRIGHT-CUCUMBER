@@ -85,7 +85,7 @@ export function fromString(dateStr: string): Date {
   return parsed;
 }
 
-/** Returns true if the year/month combo is still in the future (for card expiry checks). */
+/** Returns true if the card has expired (year/month combo is in the past). */
 export function isCardExpired(expiryYear: number, expiryMonth: number): boolean {
   const now = new Date();
   const expiry = new Date(expiryYear, expiryMonth - 1, 1);
