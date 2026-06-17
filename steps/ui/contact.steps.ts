@@ -31,3 +31,13 @@ Then('I should see a contact success message', async function (this: CustomWorld
   const factory = new PageManager(this.page);
   await factory.contact().assertSuccessMessage();
 });
+
+When(
+  'I fill the contact form with name {string} and email {string}',
+  async function (this: CustomWorld, rawName: string, rawEmail: string) {
+    const name = r(rawName);
+    const email = r(rawEmail);
+    const factory = new PageManager(this.page);
+    await factory.contact().fillForm(name, email, 'Automated contact test', 'This is an automated test message.');
+  },
+);
