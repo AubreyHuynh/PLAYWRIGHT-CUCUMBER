@@ -4,6 +4,7 @@ import type { CustomWorld } from '../../support/world';
 import { UserBuilder } from '../../src/data/builders/UserBuilder';
 import { UserFlows } from '../../src/flows/UserFlows';
 import { PageManager } from '../../support/pageManager';
+import { r } from '../../support/resolveParams';
 
 Given('I am on the login page', async function (this: CustomWorld) {
   const factory = new PageManager(this.page);
@@ -29,7 +30,9 @@ When('I register a new account', async function (this: CustomWorld) {
 
 When(
   'I login with email {string} and password {string}',
-  async function (this: CustomWorld, email: string, password: string) {
+  async function (this: CustomWorld, rawEmail: string, rawPassword: string) {
+    const email = r(rawEmail);
+    const password = r(rawPassword);
     const factory = new PageManager(this.page);
     await factory.login().login(email, password);
   },
@@ -54,6 +57,7 @@ Then('I should be logged out', async function (this: CustomWorld) {
   await expect(this.page).toHaveURL(/login/);
 });
 
-Then('I should see {string} in the header', async function (this: CustomWorld, text: string) {
+Then('I should see {string} in the header', async function (this: CustomWorld, rawText: string) {
+  const text = r(rawText);
   await expect(this.page.getByText(text)).toBeVisible();
 });

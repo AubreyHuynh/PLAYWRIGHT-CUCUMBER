@@ -2,6 +2,7 @@ import { Given, When, Then } from '@cucumber/cucumber';
 import type { CustomWorld } from '../../support/world';
 import { PageManager } from '../../support/pageManager';
 import { faker } from '@faker-js/faker';
+import { r } from '../../support/resolveParams';
 
 Given('I am on the contact page', async function (this: CustomWorld) {
   const factory = new PageManager(this.page);
@@ -15,7 +16,8 @@ When('I fill the contact form with valid data', async function (this: CustomWorl
     .fillForm(faker.person.fullName(), faker.internet.email(), faker.lorem.sentence(5), faker.lorem.paragraph());
 });
 
-When('I upload {string} as attachment', async function (this: CustomWorld, filename: string) {
+When('I upload {string} as attachment', async function (this: CustomWorld, rawFilename: string) {
+  const filename = r(rawFilename);
   const factory = new PageManager(this.page);
   await factory.contact().uploadFile(filename);
 });

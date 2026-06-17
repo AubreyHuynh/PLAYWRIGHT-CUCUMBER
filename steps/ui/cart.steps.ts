@@ -2,13 +2,15 @@ import { Given, When, Then } from '@cucumber/cucumber';
 import { expect } from '@playwright/test';
 import type { CustomWorld } from '../../support/world';
 import { PageManager } from '../../support/pageManager';
+import { r } from '../../support/resolveParams';
 
 Given('I am on the cart page', async function (this: CustomWorld) {
   const factory = new PageManager(this.page);
   await factory.cart().navigate();
 });
 
-Then('the cart should contain {string}', async function (this: CustomWorld, productName: string) {
+Then('the cart should contain {string}', async function (this: CustomWorld, rawProductName: string) {
+  const productName = r(rawProductName);
   const factory = new PageManager(this.page);
   await factory.cart().assertProductInCart(productName);
 });
@@ -19,7 +21,8 @@ Then('the cart should have {int} item\\(s\\)', async function (this: CustomWorld
   expect(actual).toBe(count);
 });
 
-When('I remove {string} from the cart', async function (this: CustomWorld, productName: string) {
+When('I remove {string} from the cart', async function (this: CustomWorld, rawProductName: string) {
+  const productName = r(rawProductName);
   const factory = new PageManager(this.page);
   await factory.cart().removeItem(productName);
 });
