@@ -1,4 +1,5 @@
 import { faker } from '@faker-js/faker';
+import { uniqueEmail } from '@utils/dynamicUtils';
 
 export interface User {
   name: string;
@@ -27,7 +28,7 @@ export class UserBuilder {
     const lastName = faker.person.lastName();
     this.user = {
       name: `${firstName} ${lastName}`,
-      email: `${firstName.toLowerCase()}.${lastName.toLowerCase()}.${Date.now()}@test.local`,
+      email: uniqueEmail(`${firstName.toLowerCase()}.${lastName.toLowerCase()}`),
       password: 'Test@1234',
       title: 'Mr.',
       firstName,

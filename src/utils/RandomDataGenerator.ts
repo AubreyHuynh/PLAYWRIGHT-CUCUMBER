@@ -1,4 +1,5 @@
 import { faker } from '@faker-js/faker';
+import { uniqueEmail } from './dynamicUtils';
 
 export interface RandomUser {
   name: string;
@@ -15,13 +16,13 @@ export interface RandomUser {
 }
 
 export class RandomDataGenerator {
-  /** Generate a random user using faker */
+  /** Generate a random user using faker. Email delegates to uniqueEmail() for parallel-safe uniqueness. */
   static user(): RandomUser {
     const firstName = faker.person.firstName();
     const lastName = faker.person.lastName();
     return {
       name: `${firstName} ${lastName}`,
-      email: faker.internet.email({ firstName, lastName, provider: 'test.local' }).toLowerCase(),
+      email: uniqueEmail(`${firstName.toLowerCase()}.${lastName.toLowerCase()}`),
       password: faker.internet.password({ length: 12, memorable: true }),
       firstName,
       lastName,
@@ -65,16 +66,6 @@ export class RandomDataGenerator {
       state: u.location.state,
       zipcode: String(u.location.postcode),
       country: u.location.country,
-    };
-  }
-
-  static creditCard() {
-    return {
-      name: faker.person.fullName(),
-      number: '4111111111111111',
-      cvc: '123',
-      expMonth: '12',
-      expYear: String(new Date().getFullYear() + 2),
     };
   }
 }
