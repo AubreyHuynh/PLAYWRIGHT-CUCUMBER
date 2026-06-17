@@ -148,6 +148,8 @@ Scenario: Complete order with unique user data
 
 Both scenarios are real executable tests, not documentation stubs.
 
+> **Implementation note:** The showcase scenarios use step text that matches existing step definitions where possible. Any step that does not yet exist must be added alongside the feature file. The implementation plan will identify which steps are new vs. reused.
+
 ---
 
 ### 2b. Tag Strategy Additions
