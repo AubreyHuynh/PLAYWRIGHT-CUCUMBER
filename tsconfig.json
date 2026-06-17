@@ -29,6 +29,6 @@
       "@fixtures/*": ["./src/fixtures/*"]
     }
   },
-  "include": ["src/**/*", "steps/**/*", "features/**/*"],
+  "include": ["src/**/*", "support/**/*", "steps/**/*", "features/**/*"],
   "exclude": ["node_modules", "dist", "reports"]
 }
