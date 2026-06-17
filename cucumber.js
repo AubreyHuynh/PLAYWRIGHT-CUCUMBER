@@ -37,4 +37,9 @@ module.exports = {
     parallel: parseInt(process.env.WORKERS || '4'),
     tags: 'not @skip',
   },
+  dynamic: {
+    ...common,
+    paths: ['features/**/*.feature'],
+    tags: '@dynamic and not @skip',
+  },
 };

@@ -49,6 +49,7 @@ npm test
 | `npm run test:api` | API tests only |
 | `npm run test:smoke` | @smoke tagged tests |
 | `npm run test:parallel` | All tests in parallel (4 workers) |
+| `npm run test:dynamic` | @dynamic (dynamic value) showcase scenarios |
 | `npm run test:bs` | BrowserStack (set BS_* env vars) |
 | `npm run report` | Generate + open Allure report |
 | `npm run lint` | ESLint check |
@@ -73,6 +74,17 @@ BROWSER=webkit npm test
 ```bash
 HEADLESS=false npm test   # headed (shows browser window)
 ```
+
+### Test Tags
+
+| Tag | Purpose |
+|-----|---------|
+| `@smoke` | Fast subset of critical user journeys |
+| `@regression` | Full test suite for release validation |
+| `@flaky` | Known to be environment-dependent; skipped in CI |
+| `@dynamic` | Uses `{{placeholder}}` data; verifies parallel-safe dynamic value resolution |
+| `@deprecated` | Scenario is scheduled for removal — use alongside `@skip` |
+| `@skip` | Excluded from all profiles |
 
 ---
 
@@ -118,6 +130,24 @@ HEADLESS=false npm test   # headed (shows browser window)
 | Singleton | ConfigManager, DbManager, DataManager |
 | Facade | `src/flows/` (UserFlows, ProductFlows, OrderFlows) |
 | Strategy | `src/locators/LocatorStrategy.ts` |
+
+---
+
+## Dynamic Value Utilities
+
+| File | Purpose | Key exports |
+|---|---|---|
+| `src/utils/dateTimeUtils.ts` | Date manipulation & formatting | `today()`, `tomorrow()`, `format()`, `toFormFields()` |
+| `src/utils/dynamicUtils.ts` | Parallel-safe unique value generation | `uniqueEmail()`, `uniqueUsername()`, `uniqueId()`, `randomInt()` |
+| `src/utils/dynamicValueUtils.ts` | `{{placeholder}}` resolution engine | `resolveTemplate()`, `resolve()`, `isKnownKey()` |
+| `src/utils/utils.ts` | General helpers + barrel re-export | `sleep()`, `retry()`, `truncate()`, `deepClone()` |
+
+**Usage in feature files:** Any Cucumber step that passes through `r()` resolves `{{key}}` tokens at runtime:
+
+```gherkin
+When I register a new account with email "{{unique_email}}" and username "{{unique_username}}"
+When I fill the contact form with name "{{unique_username}}" and email "{{unique_email}}"
+```
 
 ---
 
