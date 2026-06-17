@@ -61,3 +61,15 @@ Then('I should see {string} in the header', async function (this: CustomWorld, r
   const text = r(rawText);
   await expect(this.page.getByText(text)).toBeVisible();
 });
+
+When(
+  'I register a new account with email {string} and username {string}',
+  async function (this: CustomWorld, rawEmail: string, rawUsername: string) {
+    const email = r(rawEmail);
+    const username = r(rawUsername);
+    const user = new UserBuilder().withEmail(email).withName(username).build();
+    this.set('registeredUser', user);
+    const flows = new UserFlows(this.page);
+    await flows.registerUser(user);
+  },
+);

@@ -23,3 +23,8 @@ Feature: User Authentication
     Given I am logged in as a new user
     When I logout
     Then I should be logged out
+
+  @smoke @dynamic
+  Scenario: Register with dynamically generated credentials
+    When I register a new account with email "{{unique_email}}" and username "{{unique_username}}"
+    Then I should be logged in successfully

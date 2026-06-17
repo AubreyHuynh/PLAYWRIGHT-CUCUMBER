@@ -4,7 +4,7 @@ import { toFormParams } from '../payloadBuilder';
 
 export class AccountsApi extends ApiClient {
   async createAccount(data: ApiCreateAccountRequest): Promise<ApiResponse> {
-    const res = await this.post<ApiResponse>('/createAccount', toFormParams(data as Record<string, string | undefined>));
+    const res = await this.post<ApiResponse>('/createAccount', toFormParams(data as unknown as Record<string, string | undefined>));
     return res.data;
   }
 

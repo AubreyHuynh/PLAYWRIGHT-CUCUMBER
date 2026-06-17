@@ -1,6 +1,6 @@
 const common = {
   require: ['support/world.ts', 'support/hooks.ts', 'steps/**/*.ts'],
-  requireModule: ['ts-node/register'],
+  requireModule: ['ts-node/register', 'tsconfig-paths/register'],
   format: [
     'progress-bar',
     'allure-cucumberjs/reporter',

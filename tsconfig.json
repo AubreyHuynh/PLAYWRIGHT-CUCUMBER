@@ -29,6 +29,12 @@
       "@fixtures/*": ["./src/fixtures/*"]
     }
   },
+  "ts-node": {
+    "compilerOptions": {
+      "module": "commonjs"
+    },
+    "transpileOnly": true
+  },
   "include": ["src/**/*", "support/**/*", "steps/**/*", "features/**/*"],
   "exclude": ["node_modules", "dist", "reports"]
 }
