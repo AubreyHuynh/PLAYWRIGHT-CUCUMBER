@@ -9,8 +9,17 @@ export class WaitHelper {
     await locator.waitFor({ state: 'hidden', timeout });
   }
 
-  static async forNetworkIdle(page: Page, timeout = 15_000): Promise<void> {
+  /** Waits for the page `load` event. Prefer this over `forNetworkIdle` — it is faster and stable in CI. */
+  static async forLoad(page: Page, timeout = 15_000): Promise<void> {
     await page.waitForLoadState('load', { timeout });
+  }
+
+  /**
+   * @deprecated Prefer {@link forLoad} — `networkidle` is inherently flaky on pages with polling/analytics.
+   * Waits until there are no in-flight network requests for 500 ms.
+   */
+  static async forNetworkIdle(page: Page, timeout = 15_000): Promise<void> {
+    await page.waitForLoadState('networkidle', { timeout });
   }
 
   static async forNavigation(page: Page, timeout = 15_000): Promise<void> {

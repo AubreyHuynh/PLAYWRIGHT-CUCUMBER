@@ -16,11 +16,11 @@ export abstract class BasePage {
     await this.safeGoto(this.baseUrl + this.getPath());
   }
 
-  /** Safe navigation with retry. Uses 'domcontentloaded' so image-heavy pages don't stall. */
+  /** Safe navigation with retry. Uses 'load' so JS-rendered content is ready before assertions. */
   async safeGoto(url: string, retries = 2): Promise<void> {
     for (let attempt = 0; attempt <= retries; attempt++) {
       try {
-        await this.page.goto(url, { waitUntil: 'domcontentloaded', timeout: 20_000 });
+        await this.page.goto(url, { waitUntil: 'load', timeout: 20_000 });
         return;
       } catch (err) {
         if (attempt === retries) throw err;
