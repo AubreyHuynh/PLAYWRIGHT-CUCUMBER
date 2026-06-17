@@ -26,7 +26,8 @@
       "@db/*": ["./src/db/*"],
       "@data/*": ["./src/data/*"],
       "@utils/*": ["./src/utils/*"],
-      "@fixtures/*": ["./src/fixtures/*"]
+      "@fixtures/*": ["./src/fixtures/*"],
+      "@support/*": ["./support/*"]
     }
   },
   "ts-node": {

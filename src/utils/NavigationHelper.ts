@@ -22,7 +22,7 @@ export class NavigationHelper {
     }
   }
 
-  async switchBaseUrl(newBase: string): Promise<void> {
+  switchBaseUrl(newBase: string): void {
     this.baseUrl = newBase;
   }
 
