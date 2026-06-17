@@ -35,8 +35,8 @@ export class DataManager {
     for (const account of this.accounts) {
       try {
         await this.apiClient?.deleteAccount(account.email, account.password);
-      } catch {
-        // Best-effort cleanup
+      } catch (err) {
+        console.warn(`[DataManager] teardown failed for account "${account.email}":`, err);
       }
     }
     this.accounts = [];
