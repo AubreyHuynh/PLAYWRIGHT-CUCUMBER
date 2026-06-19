@@ -29,7 +29,7 @@ dist/
 
 # Local docs and prompts
 prompt.md
-docs/superpowers/
+docs/
 
 # Empty scaffold folders
 reports/
