@@ -16,9 +16,12 @@ export class OrderFlows {
 
     const checkout = this.factory.checkout();
     await checkout.addComment(comment);
-    await checkout.placeOrder();
-    await checkout.fillPayment(card);
-    await checkout.confirmPayment();
-    await checkout.assertOrderPlaced();
+    await checkout.clickPlaceOrder();
+
+    const payment = this.factory.payment();
+    await payment.fillPayment(card);
+    await payment.confirmPayment();
+
+    await this.factory.orderConfirmed().assertOrderPlaced();
   }
 }

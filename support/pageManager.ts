@@ -6,6 +6,8 @@ import { ProductsPage } from '../src/pages/ProductsPage';
 import { CartPage } from '../src/pages/CartPage';
 import { CheckoutPage } from '../src/pages/CheckoutPage';
 import { ContactPage } from '../src/pages/ContactPage';
+import { PaymentPage } from '../src/pages/PaymentPage';
+import { OrderConfirmedPage } from '../src/pages/OrderConfirmedPage';
 
 /** Creates and caches page objects on demand. Never instantiate pages directly in steps. */
 export class PageManager {
@@ -38,5 +40,11 @@ export class PageManager {
   }
   contact(): ContactPage {
     return this.getOrCreate('contact', () => new ContactPage(this.page));
+  }
+  payment(): PaymentPage {
+    return this.getOrCreate('payment', () => new PaymentPage(this.page));
+  }
+  orderConfirmed(): OrderConfirmedPage {
+    return this.getOrCreate('orderConfirmed', () => new OrderConfirmedPage(this.page));
   }
 }
